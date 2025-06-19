@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>幫助中心 | QUAPNI APP</title>
+
+  <!-- (可選) Font Awesome 6 作右箭頭 -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    /* ——— 基本環境 ——— */
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:"PingFang TC","Helvetica Neue",sans-serif;
+      background:#f3f3f3;          /* 底色同截圖下半部 */
+      color:#000;
+    }
+
+    /* ——— 固定白底區域 ——— */
+    .panel{
+      background:#ffffff;
+      width:100%;min-height:100vh;  /* 佔滿視窗高度 */
+      display:flex;flex-direction:column;
+    }
+
+    /* Header */
+    .panel header{
+      text-align:center;font-weight:600;font-size:1rem;
+      padding:14px 0;
+      position:sticky;top:0;        /* 若之後內容很多可固定頂端 */
+      background:#ffffff;
+      z-index:5;
+    }
+
+    /* Header 底下那條淡灰線 (截圖有一條寬高約 5px) */
+    .header-gap{
+      height:6px;
+      background:#f2f2f2;
+    }
+
+    /* ——— 列表 ——— */
+    .item{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:18px 18px;
+      text-decoration:none;color:#000;font-size:.92rem;
+      border-bottom:1px solid #f0f0f0;
+    }
+    .item i{
+      font-size:.8rem;color:#8e8e93;
+    }
+    .item:active{background:#f7f7f7;}
+
+    /* 最後一列下方不要線 */
+    .item:last-child{border-bottom:none;}
+  </style>
+</head>
+
+<body>
+
+  <div class="panel">
+
+    <header>幫助中心</header>
+    <div class="header-gap"></div>
+
+    <a href="feedback_google.html"   class="item">登錄失敗，嘗試使用Google登錄 <i class="fa-solid fa-chevron-right"></i></a>
+    <a href="feedback_facebook.html" class="item">登錄失敗，嘗試使用Facebook帳號登錄 <i class="fa-solid fa-chevron-right"></i></a>
+    <a href="feedback_line.html"     class="item">登錄失敗，嘗試使用LINE登錄 <i class="fa-solid fa-chevron-right"></i></a>
+    <a href="feedback_other.html"    class="item">其它 <i class="fa-solid fa-chevron-right"></i></a>
+    <a href="my_feedback.html"       class="item">我的反饋 <i class="fa-solid fa-chevron-right"></i></a>
+
+    <!-- 下方留白自動由 body 背景色補齊，效果與截圖一致 -->
+  </div>
+
+</body>
+</html>

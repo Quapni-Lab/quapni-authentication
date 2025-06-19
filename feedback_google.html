@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>反饋 | QUAPNI APP</title>
+
+  <!-- Bootstrap 5 與 Font Awesome -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+  /* ---------- RESET ---------- */
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;font-family:"PingFang TC","Helvetica Neue",sans-serif;color:#000;}
+
+  /* ---------- 容器 ---------- */
+  .wrapper{
+    width:100%;max-width:375px;
+    min-height:100svh; /* iOS Safari 適配 */
+    @supports(height:100dvh){min-height:100dvh;}
+    /* Safe-Area 內距 */
+    padding:
+      calc(env(safe-area-inset-top) + 14px)
+      24px
+      calc(env(safe-area-inset-bottom) + 24px);
+    margin-inline:auto;
+    display:flex;flex-direction:column;
+  }
+
+  /* ---------- Header ---------- */
+  .page-title{font-size:1.05rem;font-weight:600;}
+
+  /* ---------- 表單 ---------- */
+  label{font-size:.86rem;font-weight:600;margin-bottom:4px;}
+  .border-bottom-only{
+    border:none;border-bottom:1px solid #e0e0e0;border-radius:0;
+    padding-left:0;padding-right:0;
+  }
+  .border-bottom-only:focus{
+    border-color:#a084ff;box-shadow:none;
+  }
+
+  /* 傳送驗證碼按鈕 */
+  .send-code{
+    font-size:.8rem;
+    padding:.35rem .9rem;
+    border:1px solid #a084ff;
+    color:#a084ff;background:transparent;
+    border-radius:20px;
+    flex-shrink:0;
+  }
+  .send-code:active{
+    background:#a084ff;color:#fff;
+  }
+
+  /* 確認按鈕（預設灰） */
+  .btn-confirm{
+    width:100%;height:46px;border-radius:23px;
+    background:#c5c5c5;color:#fff;border:none;
+    font-size:.92rem;font-weight:600;
+  }
+  /* 啟用狀態範例：加上 enabled class 就變紫 */
+  .btn-confirm.enabled{background:#a084ff;}
+
+  /* 連結 */
+  .link-purple{
+    color:#a084ff;font-size:.76rem;text-decoration:none;
+  }
+  .link-purple:hover{text-decoration:underline;}
+  </style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+  <!-- 返回箭頭 + 標題 -->
+  <div class="d-flex align-items-center mb-3">
+    <a href="help_center.html" class="text-decoration-none text-dark me-2">
+      <i class="fa-solid fa-angle-left"></i>
+    </a>
+    <h6 class="flex-grow-1 text-center page-title mb-0">反饋</h6>
+    <!-- 右側留空，確保標題置中 -->
+    <div style="width:22px"></div>
+  </div>
+
+  <!-- 副標題 -->
+  <div class="text-center mb-4">
+    <h6 class="fw-bold mb-1">透過 Google 帳號登錄</h6>
+    <small class="text-muted">請嘗試用綁定變更的 Google 帳號進行登錄</small>
+  </div>
+
+  <!-- 表單 -->
+  <form class="d-flex flex-column flex-grow-1">
+    <!-- 信箱 -->
+    <div class="mb-4">
+      <label class="form-label">電子信箱</label>
+      <input type="email"
+             class="form-control border-bottom-only"
+             placeholder="123456@gmail.com" required>
+    </div>
+
+    <!-- 驗證碼 + 傳送驗證碼 -->
+    <div class="mb-4">
+      <label class="form-label">驗證碼</label>
+      <div class="d-flex align-items-center gap-2">
+        <input type="text"
+               class="form-control border-bottom-only flex-grow-1"
+               placeholder="輸入驗證碼" required>
+        <button type="button" class="send-code">傳送驗證碼</button>
+      </div>
+    </div>
+
+    <!-- 確認按鈕（下方貼底）-->
+    <button type="submit" class="btn-confirm mt-auto">確認</button>
+  </form>
+
+  <!-- 其他連結 -->
+  <div class="text-center mt-3">
+    <a href="#" class="link-purple">問題仍未解決，繼續反饋</a>
+  </div>
+</div>
+
+</body>
+</html>

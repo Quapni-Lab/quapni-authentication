@@ -1,0 +1,8 @@
+body{background:#fff;font-family:"Helvetica Neue","PingFang TC",sans-serif;}
+header{display:flex;align-items:center;padding:.6rem 1rem;border-bottom:1px solid #eee;}
+header h5{flex:1;text-align:center;margin:0;font-weight:600;}
+header a{color:#000;text-decoration:none;font-size:1.2rem;}
+.btn-round{border-radius:32px;font-weight:600;}
+.btn-main{background:#5f4beb;color:#fff;}
+.link-purple{color:#5f4beb;text-decoration:none;font-size:.8rem;}
+input.form-control:focus{box-shadow:none;border-color:#5f4beb;}
