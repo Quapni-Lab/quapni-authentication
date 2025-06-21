@@ -1,34 +1,62 @@
 import { auth } from './firebase-init.js';
-import {
-  onAuthStateChanged, signOut
-} from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js';
+import { onAuthStateChanged, signOut }
+  from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js';
 
 const $app = document.getElementById('app');
 $app.innerHTML = '<p class="text-light text-center">Loading…</p>';
 
-// 最多等 2 秒讓 Firebase 復原 session
-function waitAuth(timeout = 2000) {
-  return new Promise(resolve => {
-    let settled = false;
-    const off = onAuthStateChanged(auth, u => {
-      if (u) { settled = true; off(); resolve(u); }
+function waitAuth(timeout = 2000){
+  return new Promise(resolve=>{
+    let ok=false;
+    const off=onAuthStateChanged(auth,u=>{
+      if(u){ok=true;off();resolve(u);}
     });
-    setTimeout(() => { if (!settled) { off(); resolve(null); } }, timeout);
+    setTimeout(()=>{if(!ok){off();resolve(null);}},timeout);
   });
 }
 
-(async () => {
+(async()=>{
   const user = await waitAuth();
-  if (!user) return location.replace('login.html');
+  if(!user) return location.replace('login.html');
 
-  const { displayName, email, photoURL } = user;
+  // 取出需要顯示的欄位
+  const {
+    uid,            // UID
+    displayName,
+    email,
+    emailVerified,
+    phoneNumber,
+    photoURL,
+    metadata        // creationTime / lastSignInTime
+  } = user;
+
   $app.innerHTML = `
-    <img src="${photoURL || ''}" width="96" class="rounded-circle mb-3">
-    <h4 class="mb-1">${displayName || '使用者'}</h4>
-    <p class="text-secondary mb-4" style="font-size:.9rem">${email || ''}</p>
-    <button id="logout" class="btn btn-outline-light px-4 rounded-pill">
-      <i class="fa-solid fa-right-from-bracket me-2"></i> 登出
-    </button>`;
+    <div class="profile-card text-center mx-auto">
+      <img src="${photoURL || ''}" class="profile-avatar shadow-sm" alt="avatar">
+
+      <h2 class="profile-name">${displayName || '使用者'}</h2>
+      <p class="profile-mail">${email || ''}</p>
+
+      <!-- 驗證徽章 -->
+      <span class="badge rounded-pill ${emailVerified ? 'bg-success' : 'bg-secondary'} mb-3">
+        <i class="fa-solid fa-envelope me-1"></i>
+        ${emailVerified ? '已驗證 Email' : '未驗證 Email'}
+      </span>
+
+      <!-- 基本帳號資訊 -->
+      <div class="text-start small mb-4" style="line-height:1.45">
+        <p class="mb-1"><strong>UID：</strong>${uid}</p>
+        <p class="mb-1"><strong>建立時間：</strong>${metadata.creationTime}</p>
+        <p class="mb-1"><strong>最後登入：</strong>${metadata.lastSignInTime}</p>
+        <p class="mb-0"><strong>電話：</strong>${phoneNumber ?? '—'}</p>
+      </div>
+
+      <button id="logout" class="btn btn-outline-light w-100">
+        <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>登出
+      </button>
+    </div>`;
+
+  // 登出
   document.getElementById('logout').onclick =
     () => signOut(auth).then(() => location.replace('login.html'));
 })();
