@@ -1,34 +1,37 @@
 //----------------------------------------------
-// 共用初始化
+//  共用初始化
 //----------------------------------------------
-import { auth }                                   from './firebase-init.js';
+import { auth } from './firebase-init.js';
 import {
   GoogleAuthProvider, FacebookAuthProvider,
-  signInWithPopup, signInWithRedirect, getRedirectResult
+  signInWithPopup, signInWithRedirect, getRedirectResult,
+  onAuthStateChanged
 } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js';
 
 // Provider
 const gProvider = new GoogleAuthProvider();
-const fbProvider = new FacebookAuthProvider();
-fbProvider.addScope('email');
+const fbProvider = new FacebookAuthProvider().addScope('email');
 
-// 判斷是否為行動裝置（含平板、App 內嵌瀏覽器）
+// 行動裝置或 App 內 WebView
 const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
 //------------------------------------------------
-// ① 處理 redirect 回來的結果
+// ① 檢查是否為 redirect 回來
 //------------------------------------------------
 (async () => {
-  try {
-    const res = await getRedirectResult(auth);
-    if (res?.user) {
-      // 確定狀態寫入後再跳
-      await res.user.getIdToken(true);
-      location.replace('index.html');
-    }
-  } catch (err) {
-    console.error('getRedirectResult 失敗：', err.code, err.message);
-  }
+  // 先呼叫一次，讓 SDK 嘗試把 redirect 資訊放進 auth
+  await getRedirectResult(auth).catch(() => {});
+
+  // 最多等 1.5 秒，直到 onAuthStateChanged 拿到 user
+  const user = await new Promise(resolve => {
+    let done = false;
+    const off = onAuthStateChanged(auth, u => {
+      if (u) { done = true; off(); resolve(u); }
+    });
+    setTimeout(() => { if (!done) { off(); resolve(null); } }, 1500);
+  });
+
+  if (user) location.replace('index.html');
 })();
 
 //------------------------------------------------
@@ -36,20 +39,13 @@ const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 //------------------------------------------------
 async function google_login() {
   try {
-    // 行動裝置 or app 內瀏覽器 → 直接 redirect
     if (isMobile) return await signInWithRedirect(auth, gProvider);
 
-    // 桌機先嘗試 popup
     await signInWithPopup(auth, gProvider);
     location.replace('index.html');
-
   } catch (err) {
-    // 如果被擋，改走 redirect
-    if (err.code === 'auth/popup-blocked' ||
-        err.code === 'auth/popup-closed-by-user' ||
-        err.code === 'auth/web-popup-blocked') {
-
-      console.warn('Popup 失敗，改用 redirect…');
+    if (err.code.startsWith('auth/popup')) {
+      // 被擋彈窗 → 改用 redirect
       await signInWithRedirect(auth, gProvider);
     } else {
       console.error('Google 登入失敗：', err.code, err.message);
@@ -58,7 +54,7 @@ async function google_login() {
 }
 
 //------------------------------------------------
-// ③ Facebook 登入（同樣邏輯）
+// ③ Facebook 登入（同邏輯）
 //------------------------------------------------
 async function facebook_login() {
   try {
@@ -66,13 +62,8 @@ async function facebook_login() {
 
     await signInWithPopup(auth, fbProvider);
     location.replace('index.html');
-
   } catch (err) {
-    if (err.code === 'auth/popup-blocked' ||
-        err.code === 'auth/popup-closed-by-user' ||
-        err.code === 'auth/web-popup-blocked') {
-
-      console.warn('Popup 失敗，改用 redirect…');
+    if (err.code.startsWith('auth/popup')) {
       await signInWithRedirect(auth, fbProvider);
     } else {
       console.error('Facebook 登入失敗：', err.code, err.message);
@@ -80,6 +71,5 @@ async function facebook_login() {
   }
 }
 
-// 將函式掛到 global
 window.google_login   = google_login;
 window.facebook_login = facebook_login;
