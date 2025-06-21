@@ -10,11 +10,11 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <meta name="theme-color" content="#000000">
 
+<!-- ＊以下 CSS 與原版完全相同，略 -->
 <style>
 /* Reset --------------------------------------------------------*/
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;}
-
 /* 背景圖 + 遮罩 -------------------------------------------------*/
 body{
   background:
@@ -25,10 +25,9 @@ body{
   display:flex;justify-content:center;align-items:center;
   overflow-x:hidden;
 }
-
 /* 版心 --------------------------------------------------------*/
 .wrapper{
-  width:100%;max-width:340px;           /* ← 決定整體視覺寬度 */
+  width:100%;max-width:340px;
   min-height:100svh;
   @supports (height:100dvh){min-height:100dvh;}
   padding:
@@ -37,7 +36,6 @@ body{
     calc(env(safe-area-inset-bottom) + 24px);
   display:flex;flex-direction:column;align-items:center;
 }
-
 /* Help Center -------------------------------------------------*/
 .help-btn{
   position:fixed;
@@ -48,19 +46,16 @@ body{
   display:flex;align-items:center;gap:4px;
 }
 .help-btn i{font-size:1rem;}
-
 /* Logo --------------------------------------------------------*/
 .logo{width:180px;margin-top:40px;}
-
 /* 按鈕 --------------------------------------------------------*/
 .btn-white{
-  height:62px;               
+  height:62px;
   line-height:72px;
   background:#fff;color:#222;border:none;
 }
 .btn-white:hover{background:#f7f7f7;color:#222;}
 .btn-icon{width:28px;height:28px;object-fit:contain;flex-shrink:0;}
-
 /* 法律條款 ----------------------------------------------------*/
 .legal{
   position:fixed;left:0;right:0;
@@ -87,12 +82,14 @@ body{
   <!-- 三顆按鈕 -->
   <div class="d-flex flex-column gap-3 w-100 mt-5" style="padding-top: 120px;">
 
-    <button class="btn btn-white w-100 d-flex align-items-center gap-3 px-4 rounded-pill">
+    <button class="btn btn-white w-100 d-flex align-items-center gap-3 px-4 rounded-pill"
+            onclick="google_login()">
       <img src="img/google_icon.png" class="btn-icon" alt="Google">
       <span class="flex-grow-1 text-start">使用 Google 登入</span>
     </button>
 
-    <button class="btn btn-white w-100 d-flex align-items-center gap-3 px-4 rounded-pill">
+    <button class="btn btn-white w-100 d-flex align-items-center gap-3 px-4 rounded-pill"
+            onclick="facebook_login()">
       <img src="img/fb_icon.png" class="btn-icon" alt="Facebook">
       <span class="flex-grow-1 text-start">使用 Facebook 登入</span>
     </button>
@@ -113,5 +110,7 @@ body{
   <a href="#">《Cookies 政策》</a>
 </p>
 
+<!-- 以 ES Module 方式載入新版 Firebase SDK 與登入程式 -->
+<script type="module" src="./js/login.js"></script>
 </body>
 </html>
